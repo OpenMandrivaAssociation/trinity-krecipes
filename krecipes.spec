@@ -5,20 +5,10 @@
 %if "%{?tde_version}" == ""
 %define tde_version 14.1.5
 %endif
-%define pkg_rel 2
+%define pkg_rel 3
 
 %define tde_pkg krecipes
-%define tde_prefix /opt/trinity
-%define tde_bindir %{tde_prefix}/bin
-%define tde_datadir %{tde_prefix}/share
-%define tde_docdir %{tde_datadir}/doc
-%define tde_includedir %{tde_prefix}/include
-%define tde_libdir %{tde_prefix}/%{_lib}
-%define tde_mandir %{tde_datadir}/man
-%define tde_tdeappdir %{tde_datadir}/applications/tde
-%define tde_tdedocdir %{tde_docdir}/tde
-%define tde_tdeincludedir %{tde_includedir}/tde
-%define tde_tdelibdir %{tde_libdir}/trinity
+
 
 %undefine __brp_remove_la_files
 %define dont_remove_libtool_files 1
@@ -43,7 +33,7 @@ License:	GPLv2+
 #Vendor:		Trinity Desktop
 #Packager:	Francois Andriot <francois.andriot@free.fr>
 
-Prefix:		%{tde_prefix}
+Prefix:		/opt/trinity
 
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/misc/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 
@@ -52,14 +42,14 @@ BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
 BuildOption:    -DCMAKE_SKIP_RPATH=OFF
 BuildOption:    -DCMAKE_SKIP_INSTALL_RPATH=OFF
 BuildOption:    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
-BuildOption:    -DCMAKE_INSTALL_RPATH="%{tde_libdir}"
-BuildOption:    -DCMAKE_NO_BUILTIN_CHRPATH=ON
-BuildOption:    -DBIN_INSTALL_DIR=%{tde_bindir}
-BuildOption:    -DCONFIG_INSTALL_DIR="%{tde_confdir}"
-BuildOption:    -DINCLUDE_INSTALL_DIR=%{tde_tdeincludedir}
-BuildOption:    -DLIB_INSTALL_DIR=%{tde_libdir}
-BuildOption:    -DSHARE_INSTALL_PREFIX=%{tde_datadir}
+BuildOption:    -DCMAKE_INSTALL_RPATH=%{prefix}/%{_lib}
+BuildOption:    -DBIN_INSTALL_DIR=%{prefix}/bin
+BuildOption:    -DCONFIG_INSTALL_DIR=%{_sysconfdir}/trinity
+BuildOption:    -DINCLUDE_INSTALL_DIR=%{prefix}/include/tde
+BuildOption:    -DLIB_INSTALL_DIR=%{prefix}/%{_lib}
+BuildOption:    -DSHARE_INSTALL_PREFIX=%{prefix}/share
 BuildOption:    -DWITH_ALL_OPTIONS=ON -DBUILD_ALL=ON
+BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 BuildRequires:	desktop-file-utils
@@ -95,33 +85,33 @@ databases.
 
 %conf -p
 unset QTDIR QTINC QTLIB
-export PATH="%{tde_bindir}:${PATH}"
-export PKG_CONFIG_PATH="%{tde_libdir}/pkgconfig"
+export PATH="%{prefix}/bin:${PATH}"
+export PKG_CONFIG_PATH="%{prefix}/%{_lib}/pkgconfig"
 
 
 %install -a
 # Remove unwanted pixmaps
-%__rm -rf "%{buildroot}%{tde_datadir}/pixmaps/"
+%__rm -rf "%{buildroot}%{prefix}/share/pixmaps/"
 
 # Removes duplicate files
-%fdupes "%{buildroot}%{tde_datadir}"
+%fdupes "%{buildroot}%{prefix}/share"
 
 
 %files 
 %defattr(-,root,root,-)
-%{tde_bindir}/krecipes
-%{tde_tdeappdir}/krecipes.desktop
-%{tde_datadir}/apps/krecipes/
-%{tde_datadir}/locale/
-%{tde_datadir}/icons/crystalsvg/*/mimetypes/krecipes_file.png
-%{tde_datadir}/icons/hicolor/*/apps/krecipes.png
-%{tde_datadir}/mimelnk/application/x-krecipes-backup.desktop
-%{tde_datadir}/mimelnk/application/x-krecipes-recipes.desktop
-%lang(da) %{tde_tdedocdir}/HTML/da/
-%lang(en) %{tde_tdedocdir}/HTML/en/
-%lang(es) %{tde_tdedocdir}/HTML/es/
-%lang(et) %{tde_tdedocdir}/HTML/et/
-%lang(pt) %{tde_tdedocdir}/HTML/pt/
-%lang(sv) %{tde_tdedocdir}/HTML/sv/
-%{tde_mandir}/man1/krecipes.1*
+%{prefix}/bin/krecipes
+%{prefix}/share/applications/tde/krecipes.desktop
+%{prefix}/share/apps/krecipes/
+%{prefix}/share/locale/
+%{prefix}/share/icons/crystalsvg/*/mimetypes/krecipes_file.png
+%{prefix}/share/icons/hicolor/*/apps/krecipes.png
+%{prefix}/share/mimelnk/application/x-krecipes-backup.desktop
+%{prefix}/share/mimelnk/application/x-krecipes-recipes.desktop
+%lang(da) %{prefix}/share/doc/tde/HTML/da/
+%lang(en) %{prefix}/share/doc/tde/HTML/en/
+%lang(es) %{prefix}/share/doc/tde/HTML/es/
+%lang(et) %{prefix}/share/doc/tde/HTML/et/
+%lang(pt) %{prefix}/share/doc/tde/HTML/pt/
+%lang(sv) %{prefix}/share/doc/tde/HTML/sv/
+%{prefix}/share/man/man1/krecipes.1*
 
