@@ -5,7 +5,7 @@
 %if "%{?tde_version}" == ""
 %define tde_version 14.1.5
 %endif
-%define pkg_rel 4
+%define pkg_rel 5
 
 %define tde_pkg krecipes
 
@@ -35,16 +35,11 @@ License:	GPLv2+
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/misc/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 
 BuildSystem:    cmake
+
 BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-BuildOption:    -DCMAKE_SKIP_RPATH=OFF
-BuildOption:    -DCMAKE_SKIP_INSTALL_RPATH=OFF
-BuildOption:    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
-BuildOption:    -DCMAKE_INSTALL_RPATH=%{tde_prefix}/%{_lib}
-BuildOption:    -DBIN_INSTALL_DIR=%{tde_prefix}/bin
+BuildOption:    -DCMAKE_INSTALL_PREFIX=%{tde_prefix}
 BuildOption:    -DCONFIG_INSTALL_DIR=%{_sysconfdir}/trinity
 BuildOption:    -DINCLUDE_INSTALL_DIR=%{tde_prefix}/include/tde
-BuildOption:    -DLIB_INSTALL_DIR=%{tde_prefix}/%{_lib}
-BuildOption:    -DSHARE_INSTALL_PREFIX=%{tde_prefix}/share
 BuildOption:    -DWITH_ALL_OPTIONS=ON -DBUILD_ALL=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
