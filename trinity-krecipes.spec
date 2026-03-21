@@ -40,6 +40,10 @@ BuildOption:    -DWITH_ALL_OPTIONS=ON -DBUILD_ALL=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
+BuildRequires:  trinity-tde-cmake >= %{tde_version}
+BuildRequires:  tqt3-dev-tools
+BuildRequires:  pkgconfig(tqt)
+
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext
 
