@@ -20,7 +20,7 @@
 
 Name:		trinity-%{tde_pkg}
 Version:	1.0beta2
-Release:	%{?tde_version:%{tde_version}_}6
+Release:	%{?tde_version:%{tde_version}_}7
 Summary:	Recipes manager for TDE
 Group:		Applications/Utilities
 URL:		http://www.trinitydesktop.org/
@@ -33,6 +33,7 @@ Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}
 BuildSystem:    cmake
 
 BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
+# BuildOption:    -DCMAKE_PREFIX_PATH=%{tde_prefix}
 BuildOption:    -DCMAKE_INSTALL_PREFIX=%{tde_prefix}
 BuildOption:    -DCONFIG_INSTALL_DIR=%{_sysconfdir}/trinity
 BuildOption:    -DINCLUDE_INSTALL_DIR=%{tde_prefix}/include/tde
@@ -41,7 +42,6 @@ BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 BuildRequires:  trinity-tde-cmake >= %{tde_version}
-BuildRequires:  tqt3-dev-tools
 BuildRequires:  pkgconfig(tqt)
 
 BuildRequires:	desktop-file-utils
